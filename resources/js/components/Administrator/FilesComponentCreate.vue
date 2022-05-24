@@ -54,7 +54,7 @@
                             </div><!--div cols-->
 
                             <div class="buttons">
-                                <b-button label="Upload File" class="is-info"></b-button>
+                                <b-button label="Upload File" @click="submit" class="is-info"></b-button>
                             </div>
 
 
@@ -80,8 +80,27 @@ export default {
     methods: {
         submit: function(){
             let formData = new FormData();
+            formData.append('repo_filename', this.fields.filename);
 
+            this.fields.dropFiles.forEach(item =>{
+                formData.append('repo_filepath[]', item);
+            });
+
+            axios.post('/files', formData).then(res=>{
+                if(res.data.status === 'saved'){
+                    //alert('Boarding house successfully saved.');
+                    //window.location = '/boarding-house';
+                }
+            }).catch(err=>{
+                if(err.response.status === 422){
+                    this.errors = err.response.data.errors;
+                }
+            });
             
+        },
+
+        deleteDropFile(index) {
+            this.fields.dropFiles.splice(index, 1)
         }
     }
 }

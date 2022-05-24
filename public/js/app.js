@@ -8047,7 +8047,25 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
+      var _this = this;
+
       var formData = new FormData();
+      formData.append('repo_filename', this.fields.filename);
+      this.fields.dropFiles.forEach(function (item) {
+        formData.append('repo_filepath[]', item);
+      });
+      axios.post('/files', formData).then(function (res) {
+        if (res.data.status === 'saved') {//alert('Boarding house successfully saved.');
+          //window.location = '/boarding-house';
+        }
+      })["catch"](function (err) {
+        if (err.response.status === 422) {
+          _this.errors = err.response.data.errors;
+        }
+      });
+    },
+    deleteDropFile: function deleteDropFile(index) {
+      this.fields.dropFiles.splice(index, 1);
     }
   }
 });
@@ -34352,6 +34370,7 @@ var render = function () {
                   _c("b-button", {
                     staticClass: "is-info",
                     attrs: { label: "Upload File" },
+                    on: { click: _vm.submit },
                   }),
                 ],
                 1

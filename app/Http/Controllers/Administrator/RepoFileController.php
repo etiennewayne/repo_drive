@@ -24,4 +24,10 @@ class RepoFileController extends Controller
     }
 
 
+    public function store(Request $req){
+
+        return $req;
+    }
+
+
 }
