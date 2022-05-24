@@ -3,9 +3,9 @@
         <div class="section">
 
             <div class="columns is-centered">
-                <div class="column is-10">
+                <div class="column is-6">
                     <div class="box">
-                        <div class="is-flex is-justify-content-center mb-2" style="font-size: 20px; font-weight: bold;">FRANCHISES</div>
+                        <div class="is-flex is-justify-content-center mb-2" style="font-size: 20px; font-weight: bold;">LIST OF FILES</div>
 
                         <div class="level">
                             <div class="level-left">
@@ -19,51 +19,27 @@
                                     <b-select v-model="sortOrder" @input="loadAsyncData">
                                         <option value="asc">ASC</option>
                                         <option value="desc">DESC</option>
+
                                     </b-select>
                                 </b-field>
                             </div>
 
                             <div class="level-right">
-
-                            </div>
-                        </div>
-
-
-                        <div class="level">
-                            <div class="level-left">
                                 <div class="level-item">
-                                    <b-field label="Search Reference">
+                                    <b-field label="Search">
                                         <b-input type="text"
-                                                v-model="search.franchise_reference" placeholder="Search Reference"
-                                                @keyup.native.enter="loadAsyncData"/>
+                                                 v-model="search.filename" placeholder="Search Filename"
+                                                 @keyup.native.enter="loadAsyncData"/>
                                         <p class="control">
-                                            <b-tooltip label="Search Reference" type="is-success">
-                                                <b-button type="is-primary" icon-right="feature-search-outline" @click="loadAsyncData"/>
-                                            </b-tooltip>
-                                        </p>
-                                    </b-field>
-                                </div>
-                            </div>
-
-                            <div class="level-right">
-                                <div class="level-item">
-                                    <b-field label="Search Operator">
-                                        <b-input type="text"
-                                                v-model="search.operator" placeholder="Search Operator"
-                                                @keyup.native.enter="loadAsyncData"/>
-                                        <p class="control">
-                                            <b-tooltip label="Search Operator" type="is-success">
-                                                <b-button type="is-primary" icon-right="feature-search-outline" @click="loadAsyncData"/>
-                                            </b-tooltip>
+                                             <b-tooltip label="Search" type="is-success">
+                                            <b-button type="is-primary" icon-right="account-filter" @click="loadAsyncData"/>
+                                             </b-tooltip>
                                         </p>
                                     </b-field>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="buttons mt-3">
-                            <b-button tag="a" href="/franchise/create" icon-right="account-arrow-up-outline" class="is-primary is-outlined">NEW</b-button>
-                        </div>
 
                         <b-table
                             :data="data"
@@ -81,42 +57,40 @@
                             :default-sort-direction="defaultSortDirection"
                             @sort="onSort">
 
-                            <b-table-column field="franchise_id" label="ID" v-slot="props">
-                                {{ props.row.franchise_id }}
+                            <b-table-column field="repo_file_id" label="ID" v-slot="props">
+                                {{ props.row.repo_file_id }}
                             </b-table-column>
 
-                            <b-table-column field="franchise_reference" label="Reference" v-slot="props">
-                                {{ props.row.franchise_reference }}
+                            <b-table-column field="repo_filename" label="Filename" v-slot="props">
+                                {{ props.row.repo_filename }}
                             </b-table-column>
 
-                            <b-table-column field="date_acquired" label="Date Acquired" v-slot="props">
-                                {{ props.row.date_acquired }}
+                            <b-table-column field="repo_filetype" label="Type" v-slot="props">
+                                {{ props.row.repo_filetype }}
                             </b-table-column>
-
-                            <b-table-column field="operator_name" label="Operator Name" v-slot="props">
-                                {{ props.row.operator_name }}
-                            </b-table-column>
-
 
                             <b-table-column label="Action" v-slot="props">
                                 <div class="is-flex">
                                     <b-tooltip label="Edit" type="is-warning">
-                                        <b-button class="button is-small is-info mr-1" tag="a" icon-right="printer" :href="`/franchise-show-qr/${props.row.franchise_reference}`"></b-button>
-                                    </b-tooltip>
-                                    <b-tooltip label="Edit" type="is-warning">
-                                        <b-button class="button is-small is-warning mr-1" tag="a" icon-right="pencil" @click="getData(props.row.franchise_id)"></b-button>
+                                        <b-button class="button is-small is-warning mr-1" tag="a" icon-right="pencil" @click="getData(props.row.office_id)"></b-button>
                                     </b-tooltip>
                                     <b-tooltip label="Delete" type="is-danger">
-                                        <b-button class="button is-small is-danger mr-1" icon-right="delete" @click="confirmDelete(props.row.franchise_id)"></b-button>
+                                        <b-button class="button is-small is-danger mr-1" icon-right="delete" @click="confirmDelete(props.row.office_id)"></b-button>
                                     </b-tooltip>
                                 </div>
                             </b-table-column>
 
                         </b-table>
 
+                        <div class="buttons mt-3">
+                            <b-button tag="a" href="/files/create" icon-right="account-arrow-up-outline" class="is-success">NEW</b-button>
+                        </div>
+
                     </div>
                 </div><!--close column-->
             </div>
+
+
         </div><!--section div-->
 
 
@@ -128,12 +102,12 @@
                  aria-role="dialog"
                  aria-label="Modal"
                  aria-modal
-                type = "is-link">
+                 type = "is-link">
 
             <form @submit.prevent="submit">
                 <div class="modal-card">
                     <header class="modal-card-head">
-                        <p class="modal-card-title">Appointment Type</p>
+                        <p class="modal-card-title">Office Information</p>
                         <button
                             type="button"
                             class="delete"
@@ -142,7 +116,17 @@
 
                     <section class="modal-card-body">
                         <div class="">
-
+                            <div class="columns">
+                                <div class="column">
+                                    <b-field label="Office Name"
+                                             :type="this.errors.office_name ? 'is-danger':''"
+                                             :message="this.errors.office_name ? this.errors.office_name[0] : ''">
+                                        <b-input v-model="fields.office_name"
+                                                 placeholder="Office Name" required>
+                                        </b-input>
+                                    </b-field>
+                                </div>
+                            </div>
 
                         </div>
                     </section>
@@ -161,44 +145,6 @@
         <!--close modal-->
 
 
-
-
-        <!--modal create-->
-        <b-modal v-model="modalQR" has-modal-card
-                 trap-focus
-                 :width="640"
-                 aria-role="dialog"
-                 aria-label="Modal"
-                 aria-modal
-                type = "is-link">
-
-            <form>
-                <div class="modal-card">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">QR</p>
-                        <button
-                            type="button"
-                            class="delete"
-                            @click="modalQR = false"/>
-                    </header>
-
-                    <section class="modal-card-body">
-                        <div class="printarea">
-                            <qrcode :value="franchise_reference" :options="{ width: 200 }"></qrcode>
-                        </div>
-                    </section>
-                    <footer class="modal-card-foot">
-                        <b-button
-                            label="Close"
-                            @click="modalQR=false"/>
-
-                    </footer>
-                </div>
-            </form><!--close form-->
-        </b-modal>
-        <!--close modal-->
-
-
     </div>
 </template>
 
@@ -210,7 +156,7 @@ export default {
             data: [],
             total: 0,
             loading: false,
-            sortField: 'franchise_id',
+            sortField: 'file_id',
             sortOrder: 'desc',
             page: 1,
             perPage: 5,
@@ -220,17 +166,19 @@ export default {
             global_id : 0,
 
             search: {
-                franchise_reference: '',
-                operator: '',
+                filename: '',
             },
 
-            franchise_reference: '',
-
             isModalCreate: false,
-            modalQR: false,
 
-            fields: {},
+            fields: {
+                office_id: 0,
+                appointment_type: '',
+
+            },
             errors: {},
+
+            offices: [],
 
             btnClass: {
                 'is-success': true,
@@ -248,14 +196,13 @@ export default {
         loadAsyncData() {
             const params = [
                 `sort_by=${this.sortField}.${this.sortOrder}`,
-                `franchise=${this.search.franchise_reference}`,
-                `operator=${this.search.operator}`,
+                `office=${this.search.office}`,
                 `perpage=${this.perPage}`,
                 `page=${this.page}`
             ].join('&')
 
             this.loading = true
-            axios.get(`/get-franchises?${params}`)
+            axios.get(`/get-offices?${params}`)
                 .then(({ data }) => {
                     this.data = [];
                     let currentTotal = data.total
@@ -303,9 +250,6 @@ export default {
 
         },
 
-
-
-
         //alert box ask for deletion
         confirmDelete(delete_id) {
             this.$buefy.dialog.confirm({
@@ -319,7 +263,7 @@ export default {
         },
         //execute delete after confirming
         deleteSubmit(delete_id) {
-            axios.delete('/franchise/' + delete_id).then(res => {
+            axios.delete('/offices/' + delete_id).then(res => {
                 this.loadAsyncData();
             }).catch(err => {
                 if (err.response.status === 422) {
@@ -331,21 +275,19 @@ export default {
         //update code here
         getData: function(data_id){
             this.clearFields();
-            /*this.global_id = data_id;
+            this.global_id = data_id;
             this.isModalCreate = true;
 
 
             //nested axios for getting the address 1 by 1 or request by request
-            axios.get('/franchise/'+data_id).then(res=>{
-                this.fields = res.data[0];
-            });*/
-            window.location = '/franchise/' + data_id + '/edit';
+            axios.get('/offices/'+data_id).then(res=>{
+                this.fields = res.data;
+            });
         },
 
         clearFields(){
             this.fields = {
-                franchise_code: null,
-                description: null,
+                appointment_type: '',
             };
         },
 
@@ -353,7 +295,7 @@ export default {
         submit: function(){
             if(this.global_id > 0){
                 //update
-                axios.put('/franchise/'+this.global_id, this.fields).then(res=>{
+                axios.put('/offices/'+this.global_id, this.fields).then(res=>{
                     if(res.data.status === 'updated'){
                         this.$buefy.dialog.alert({
                             title: 'UPDATED!',
@@ -374,7 +316,7 @@ export default {
                 })
             }else{
                 //INSERT HERE
-                axios.post('franchise', this.fields).then(res=>{
+                axios.post('/offices', this.fields).then(res=>{
                     if(res.data.status === 'saved'){
                         this.$buefy.dialog.alert({
                             title: 'SAVED!',
@@ -395,18 +337,12 @@ export default {
                     }
                 });
             }
-        },
-
-
-
-        showQR: function(row){
-            this.modalQR = true;
-            this.franchise_reference = row.franchise_reference;
         }
 
     },
 
     mounted() {
+
         this.loadAsyncData();
     }
 
@@ -414,14 +350,5 @@ export default {
 </script>
 
 <style scoped>
-
-
-@media print {
-    .section {
-        display: none;
-    }
-    .printarea * { display:block; }
-}
-
 
 </style>

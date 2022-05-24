@@ -9,9 +9,9 @@
 
                     <div class="panel-body">
 
-                        <div class="img-container">
-                            <img class="img" src="/img/qrlogo.png" />
-                        </div>
+<!--                        <div class="img-container">-->
+<!--                            <img class="img" src="/img/qrlogo.png" />-->
+<!--                        </div>-->
                         <b-field label="Username" label-position="on-border"
                             :type="this.errors.username ? 'is-danger':''"
                             :message="this.errors.username ? this.errors.username[0] : ''">

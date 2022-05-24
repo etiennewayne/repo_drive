@@ -26,46 +26,15 @@
                     <b-menu-list label="Menu">
 
                         <b-menu-item icon="information-outline" label="Dashboard" tag="a" href="/dashboard-admin"></b-menu-item>
-<!--                            <b-menu-item icon="settings">-->
-<!--                                <template #label="props">-->
-<!--                                    Administrator-->
-<!--                                    <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>-->
-<!--                                </template>-->
-<!--                                <b-menu-item icon="account" tag="a" href="/users" label="Users"></b-menu-item>-->
-<!--                                <b-menu-item icon="cellphone-link">-->
-<!--                                    <template #label>-->
-<!--                                        Devices-->
-<!--                                        <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">-->
-<!--                                            <template #trigger>-->
-<!--                                                <b-icon icon="dots-vertical"></b-icon>-->
-<!--                                            </template>-->
-<!--                                            <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>-->
-<!--                                            <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>-->
-<!--                                            <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>-->
-<!--                                        </b-dropdown>-->
-<!--                                    </template>-->
-<!--                                </b-menu-item>-->
-<!--                                <b-menu-item icon="cash-multiple" label="Payments" disabled></b-menu-item>-->
-<!--                            </b-menu-item>-->
-<!--                            <b-menu-item icon="account" label="User Account">-->
-<!--                                <b-menu-item label="Users Account" tag="a" href="/users"></b-menu-item>-->
-<!--                                <b-menu-item label="My Account"></b-menu-item>-->
-<!--                            </b-menu-item>-->
-                    </b-menu-list>
-                    <b-menu-list>
-                        <b-menu-item label="Franchise" icon="microsoft-office" tag="a" href="/franchise"></b-menu-item>
-                    </b-menu-list>
+                        <b-menu-item icon="file-multiple" label="Files" tag="a" href="/files"></b-menu-item>
 
-                    <b-menu-list>
-                        <b-menu-item label="QR Scanner" icon="qrcode-scan" tag="a" href="/qr-scanner"></b-menu-item>
-                    </b-menu-list>
 
-                    <b-menu-list>
                         <b-menu-item label="User" icon="account" tag="a" href="/users"></b-menu-item>
+
+                        <b-menu-item label="Franchise" icon="microsoft-office" tag="a" href="/franchise"></b-menu-item>
+                        <b-menu-item label="QR Scanner" icon="qrcode-scan" tag="a" href="/qr-scanner"></b-menu-item>
+
                     </b-menu-list>
-<!--                        <b-menu-list>-->
-<!--                            <b-menu-item label="Expo" icon="link" target="_blank" to="/expo"></b-menu-item>-->
-<!--                        </b-menu-list>-->
 
                     <b-menu-list label="Actions">
                         <b-menu-item @click="logout" label="Logout"></b-menu-item>

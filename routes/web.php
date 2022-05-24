@@ -20,6 +20,13 @@ Route::get('/', function () {
     return view('login');
 });
 
+
+//for google authentication
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+
+
 Auth::routes([
     'login' => false,
     'register' => false, // Registration Routes...
@@ -52,28 +59,16 @@ Route::resource('/users', App\Http\Controllers\Administrator\UserController::cla
 Route::get('/get-users', [App\Http\Controllers\Administrator\UserController::class, 'getUsers']);
 Route::get('/get-user-offices', [App\Http\Controllers\Administrator\UserController::class, 'getOffices']);
 
-//Franchise
-Route::resource('/franchise', App\Http\Controllers\Administrator\FranchiseController::class);
-Route::get('/get-franchises', [App\Http\Controllers\Administrator\FranchiseController::class, 'getFranchises']);
-Route::get('/franchise-show-qr/{qrref}', [App\Http\Controllers\Administrator\FranchiseController::class, 'showQRPage']);
+
+
+//FILES
+Route::resource('/files', App\Http\Controllers\Administrator\RepoFileController::class);
 
 
 
-//QR Scanner
-Route::resource('/qr-scanner', App\Http\Controllers\Administrator\QRScannerController::class);
-Route::post('/validate-qr', [App\Http\Controllers\Administrator\QRScannerController::class, 'validateQR']);
 
 
-// Route::resource('/ordinance', App\Http\Controllers\Administrator\OrdinanceController::class);
-// Route::get('/get-ordinances', [App\Http\Controllers\Administrator\OrdinanceController::class, 'getOrdinances']);
 
-// Route::get('/get-open-ordinances', [App\Http\Controllers\CovidUpdatesController::class, 'getOrdinances']);
-
-
-// Route::get('/report-track', [App\Http\Controllers\Administrator\ReportTrackController::class, 'index']);
-// Route::get('/get-report-track', [App\Http\Controllers\Administrator\ReportTrackController::class, 'getReportTrack']);
-
-//Offices Administrator (For office management)
 
 /*     ADMINSITRATOR          */
 
@@ -83,33 +78,6 @@ Route::get('/get-offices', [App\Http\Controllers\Administrator\OfficeController:
 Route::get('/load-offices', [App\Http\Controllers\Administrator\OfficeController::class, 'loadOffices']);
 
 
-
-
-
-
-//OFFICE ROLE
-Route::resource('/dashboard-office', App\Http\Controllers\Office\OfficeDashboardController::class);
-
-Route::resource('/office-appointment', App\Http\Controllers\Office\OfficeAppointmentController::class);
-Route::get('/get-office-appointments', [App\Http\Controllers\Office\OfficeAppointmentController::class, 'getOfficeAppointments']);
-Route::post('/office-appointment-approve/{id}', [App\Http\Controllers\Office\OfficeAppointmentController::class, 'approveAppointment']);
-Route::post('/office-appointment-cancel/{id}', [App\Http\Controllers\Office\OfficeAppointmentController::class, 'cancelAppointment']);
-Route::post('/office-appointment-update-time/{id}', [App\Http\Controllers\Office\OfficeAppointmentController::class, 'updateTime']);
-
-Route::get('/get-no-request', [App\Http\Controllers\Office\OfficeAppointmentController::class, 'noOfRequest']);
-
-Route::resource('/office-scanner', App\Http\Controllers\Office\OfficeScannerController::class);
-
-//Route::get('/get-scanned-appointment', [App\Http\Controllers\Office\OfficeScannerController::class, 'getScannedAppointment']);
-
-Route::get('/get-current-user', [App\Http\Controllers\Office\OfficeScannerController::class, 'getCurrentUser']);
-Route::get('/office-appointment-tracks', [App\Http\Controllers\Office\OfficeScannerController::class, 'getOfficeAppointmentTracks']);
-
-Route::resource('/my-appointment-type', App\Http\Controllers\Office\MyAppointmentTypeController::class);
-Route::get('/get-my-appointment-type-list', [App\Http\Controllers\Office\MyAppointmentTypeController::class, 'getOffice']);
-Route::get('/get-my-appointment-type/{appid}', [App\Http\Controllers\Office\MyAppointmentTypeController::class, 'show']);
-Route::post('/my-appointment-type-deactivate/{appid}', [App\Http\Controllers\Office\MyAppointmentTypeController::class, 'deactivate']);
-Route::post('/my-appointment-type-activate/{appid}', [App\Http\Controllers\Office\MyAppointmentTypeController::class, 'activate']);
 
 
 
