@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAppClocksTable extends Migration
+class CreateRepoFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateAppClocksTable extends Migration
      */
     public function up()
     {
-        Schema::create('app_clocks', function (Blueprint $table) {
-            $table->id();
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
-
+        Schema::create('repo_files', function (Blueprint $table) {
+            $table->id('repo_file_id');
+            $table->string('repo_filename')->nullable();
+            $table->string('repo_path')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateAppClocksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('app_clocks');
+        Schema::dropIfExists('repo_files');
     }
 }
