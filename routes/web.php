@@ -63,6 +63,7 @@ Route::get('/get-user-offices', [App\Http\Controllers\Administrator\UserControll
 
 //FILES
 Route::resource('/files', App\Http\Controllers\Administrator\RepoFileController::class);
+Route::get('/get-files', [App\Http\Controllers\Administrator\RepoFileController::class, 'getFiles']);
 
 
 

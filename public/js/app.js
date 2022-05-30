@@ -7769,7 +7769,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "AppointmentType",
   data: function data() {
@@ -7777,22 +7776,21 @@ __webpack_require__.r(__webpack_exports__);
       data: [],
       total: 0,
       loading: false,
-      sortField: 'file_id',
+      sortField: 'repo_file_id',
       sortOrder: 'desc',
       page: 1,
       perPage: 5,
       defaultSortDirection: 'asc',
       global_id: 0,
       search: {
-        filename: ''
+        repo: ''
       },
       isModalCreate: false,
       fields: {
-        office_id: 0,
-        appointment_type: ''
+        repo_filename: 0,
+        repo_path: {}
       },
       errors: {},
-      offices: [],
       btnClass: {
         'is-success': true,
         'button': true,
@@ -7809,7 +7807,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var params = ["sort_by=".concat(this.sortField, ".").concat(this.sortOrder), "office=".concat(this.search.office), "perpage=".concat(this.perPage), "page=".concat(this.page)].join('&');
       this.loading = true;
-      axios.get("/get-offices?".concat(params)).then(function (_ref) {
+      axios.get("/get-files?".concat(params)).then(function (_ref) {
         var data = _ref.data;
         _this.data = [];
         var currentTotal = data.total;
@@ -7871,7 +7869,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteSubmit: function deleteSubmit(delete_id) {
       var _this3 = this;
 
-      axios["delete"]('/offices/' + delete_id).then(function (res) {
+      axios["delete"]('/files/' + delete_id).then(function (res) {
         _this3.loadAsyncData();
       })["catch"](function (err) {
         if (err.response.status === 422) {
@@ -7887,67 +7885,14 @@ __webpack_require__.r(__webpack_exports__);
       this.global_id = data_id;
       this.isModalCreate = true; //nested axios for getting the address 1 by 1 or request by request
 
-      axios.get('/offices/' + data_id).then(function (res) {
+      axios.get('/files/' + data_id).then(function (res) {
         _this4.fields = res.data;
       });
     },
     clearFields: function clearFields() {
       this.fields = {
-        appointment_type: ''
+        repo_path: {}
       };
-    },
-    submit: function submit() {
-      var _this5 = this;
-
-      if (this.global_id > 0) {
-        //update
-        axios.put('/offices/' + this.global_id, this.fields).then(function (res) {
-          if (res.data.status === 'updated') {
-            _this5.$buefy.dialog.alert({
-              title: 'UPDATED!',
-              message: 'Successfully updated.',
-              type: 'is-success',
-              onConfirm: function onConfirm() {
-                _this5.loadAsyncData();
-
-                _this5.clearFields();
-
-                _this5.global_id = 0;
-                _this5.isModalCreate = false;
-              }
-            });
-          }
-        })["catch"](function (err) {
-          if (err.response.status === 422) {
-            _this5.errors = err.response.data.errors;
-          }
-        });
-      } else {
-        //INSERT HERE
-        axios.post('/offices', this.fields).then(function (res) {
-          if (res.data.status === 'saved') {
-            _this5.$buefy.dialog.alert({
-              title: 'SAVED!',
-              message: 'Successfully saved.',
-              type: 'is-success',
-              confirmText: 'OK',
-              onConfirm: function onConfirm() {
-                _this5.isModalCreate = false;
-
-                _this5.loadAsyncData();
-
-                _this5.clearFields();
-
-                _this5.global_id = 0;
-              }
-            });
-          }
-        })["catch"](function (err) {
-          if (err.response.status === 422) {
-            _this5.errors = err.response.data.errors;
-          }
-        });
-      }
     }
   },
   mounted: function mounted() {
@@ -8029,39 +7974,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       fields: {},
-      errors: {}
+      errors: {},
+      btnClass: {
+        'is-success': true,
+        'button': true,
+        'is-loading': false
+      }
     };
   },
   methods: {
     submit: function submit() {
       var _this = this;
 
+      this.btnClass['is-loading'] = true;
       var formData = new FormData();
       formData.append('repo_filename', this.fields.filename);
       this.fields.dropFiles.forEach(function (item) {
         formData.append('repo_filepath[]', item);
       });
       axios.post('/files', formData).then(function (res) {
-        if (res.data.status === 'saved') {//alert('Boarding house successfully saved.');
-          //window.location = '/boarding-house';
+        _this.btnClass['is-loading'] = false;
+
+        if (res.data.status === 'saved') {
+          alert('Files uploaded successfully.');
+          window.location = '/files';
         }
       })["catch"](function (err) {
         if (err.response.status === 422) {
           _this.errors = err.response.data.errors;
         }
+
+        _this.btnClass['is-loading'] = false;
       });
     },
     deleteDropFile: function deleteDropFile(index) {
@@ -33753,7 +33700,7 @@ var render = function () {
     [
       _c("div", { staticClass: "section" }, [
         _c("div", { staticClass: "columns is-centered" }, [
-          _c("div", { staticClass: "column is-6" }, [
+          _c("div", { staticClass: "column is-10" }, [
             _c(
               "div",
               { staticClass: "box" },
@@ -33871,11 +33818,11 @@ var render = function () {
                                 },
                               },
                               model: {
-                                value: _vm.search.filename,
+                                value: _vm.search.repo,
                                 callback: function ($$v) {
-                                  _vm.$set(_vm.search, "filename", $$v)
+                                  _vm.$set(_vm.search, "repo", $$v)
                                 },
-                                expression: "search.filename",
+                                expression: "search.repo",
                               },
                             }),
                             _vm._v(" "),
@@ -33979,7 +33926,7 @@ var render = function () {
                             return [
                               _vm._v(
                                 "\n                            " +
-                                  _vm._s(props.row.repo_filetype) +
+                                  _vm._s(props.row.repo_ext) +
                                   "\n                        "
                               ),
                             ]
@@ -34018,7 +33965,7 @@ var render = function () {
                                         on: {
                                           click: function ($event) {
                                             return _vm.getData(
-                                              props.row.office_id
+                                              props.row.repo_file_id
                                             )
                                           },
                                         },
@@ -34043,7 +33990,7 @@ var render = function () {
                                         on: {
                                           click: function ($event) {
                                             return _vm.confirmDelete(
-                                              props.row.office_id
+                                              props.row.repo_file_id
                                             )
                                           },
                                         },
@@ -34250,37 +34197,10 @@ var render = function () {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "box-body" }, [
-              _c("div", { staticClass: "columns" }, [
+              _c("div", { staticClass: "columns is-centered" }, [
                 _c(
                   "div",
-                  { staticClass: "column" },
-                  [
-                    _c(
-                      "b-field",
-                      { attrs: { label: "Filename" } },
-                      [
-                        _c("b-input", {
-                          attrs: { type: "text", placeholder: "Filename" },
-                          model: {
-                            value: _vm.fields.filename,
-                            callback: function ($$v) {
-                              _vm.$set(_vm.fields, "filename", $$v)
-                            },
-                            expression: "fields.filename",
-                          },
-                        }),
-                      ],
-                      1
-                    ),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "columns" }, [
-                _c(
-                  "div",
-                  { staticClass: "column" },
+                  { staticClass: "column is-6" },
                   [
                     _c(
                       "b-field",
@@ -34365,10 +34285,10 @@ var render = function () {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "buttons" },
+                { staticClass: "buttons is-right" },
                 [
                   _c("b-button", {
-                    staticClass: "is-info",
+                    class: _vm.btnClass,
                     attrs: { label: "Upload File" },
                     on: { click: _vm.submit },
                   }),

@@ -12,7 +12,7 @@ class RepoFile extends Model
     protected $table = 'repo_files';
     protected $primaryKey = 'repo_file_id';
 
-    protected $fillable = ['repo_filename', 'repo_path'];
+    protected $fillable = ['repo_filename', 'repo_path', 'repo_ext'];
 
 
     

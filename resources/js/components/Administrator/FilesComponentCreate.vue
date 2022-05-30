@@ -11,16 +11,8 @@
                         </div>
 
                         <div class="box-body">
-                            <div class="columns">
-                                <div class="column">
-                                    <b-field label="Filename">
-                                        <b-input type="text" v-model="fields.filename" placeholder="Filename"></b-input>
-                                    </b-field>
-                                </div>
-                            </div>
-
-                            <div class="columns">
-                                <div class="column">
+                            <div class="columns is-centered">
+                                <div class="column is-6">
                                     <b-field label="">
                                         <b-upload v-model="fields.dropFiles"
                                             multiple
@@ -53,10 +45,9 @@
                                 </div>
                             </div><!--div cols-->
 
-                            <div class="buttons">
-                                <b-button label="Upload File" @click="submit" class="is-info"></b-button>
+                            <div class="buttons is-right">
+                                <b-button label="Upload File" @click="submit" :class="btnClass"></b-button>
                             </div>
-
 
                         </div><!--div box body-->
                     </div> <!--div box-->
@@ -75,10 +66,18 @@ export default {
             fields: {},
             errors: {},
 
+            btnClass: {
+                'is-success': true,
+                'button': true,
+                'is-loading':false,
+            }
+
         }
     },
     methods: {
         submit: function(){
+            this.btnClass['is-loading'] = true;
+
             let formData = new FormData();
             formData.append('repo_filename', this.fields.filename);
 
@@ -87,14 +86,17 @@ export default {
             });
 
             axios.post('/files', formData).then(res=>{
+                this.btnClass['is-loading'] = false;
+
                 if(res.data.status === 'saved'){
-                    //alert('Boarding house successfully saved.');
-                    //window.location = '/boarding-house';
+                    alert('Files uploaded successfully.');
+                    window.location = '/files';
                 }
             }).catch(err=>{
                 if(err.response.status === 422){
                     this.errors = err.response.data.errors;
                 }
+                this.btnClass['is-loading'] = false;
             });
             
         },

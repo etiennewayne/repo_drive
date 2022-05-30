@@ -21,7 +21,13 @@ class RepoFileController extends Controller
         return view('administrator.files');
     }
 
-
+    public function getFiles(Request $req){
+        $sort = explode('.',$req->sort_by);
+        $data = RepoFile::where('repo_filename', 'like', $req->repo . '%')
+            ->orderBy($sort[0], $sort[1])
+            ->paginate($req->perpage);
+        return $data;
+    }
 
     public function create(){
        return view('administrator.files-create'); 
@@ -30,15 +36,22 @@ class RepoFileController extends Controller
 
     public function store(Request $req){
 
+        $req->validate([
+            'repo_filename' => ['required']
+        ]);
+
         foreach($req->repo_filepath as $repo){
             //$file = $repo('bed_img');
             $pathFile = $repo->store('public/repo'); //get path of the file
             RepoFile::create([
-                'repo_filename' => $req->repo_filename,
-                'repo_path' => $pathFile
+                'repo_filename' => $repo->getClientOriginalName(),
+                'repo_path' => $pathFile,
+                'repo_ext' => $repo->getClientOriginalExtension()
             ]);
         }
-        return $req;
+        return response()->json([
+            'status' => 'saved'
+        ]);
     }
 
 

@@ -17,6 +17,7 @@ class CreateRepoFilesTable extends Migration
             $table->id('repo_file_id');
             $table->string('repo_filename')->nullable();
             $table->string('repo_path')->nullable();
+            $table->string('repo_ext')->nullable();
             $table->timestamps();
         });
     }

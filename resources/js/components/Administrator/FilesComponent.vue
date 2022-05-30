@@ -3,7 +3,7 @@
         <div class="section">
 
             <div class="columns is-centered">
-                <div class="column is-6">
+                <div class="column is-10">
                     <div class="box">
                         <div class="is-flex is-justify-content-center mb-2" style="font-size: 20px; font-weight: bold;">LIST OF FILES</div>
 
@@ -28,7 +28,7 @@
                                 <div class="level-item">
                                     <b-field label="Search">
                                         <b-input type="text"
-                                                 v-model="search.filename" placeholder="Search Filename"
+                                                 v-model="search.repo" placeholder="Search Filename"
                                                  @keyup.native.enter="loadAsyncData"/>
                                         <p class="control">
                                              <b-tooltip label="Search" type="is-success">
@@ -39,7 +39,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                         <b-table
                             :data="data"
@@ -66,16 +65,16 @@
                             </b-table-column>
 
                             <b-table-column field="repo_filetype" label="Type" v-slot="props">
-                                {{ props.row.repo_filetype }}
+                                {{ props.row.repo_ext }}
                             </b-table-column>
 
                             <b-table-column label="Action" v-slot="props">
                                 <div class="is-flex">
                                     <b-tooltip label="Edit" type="is-warning">
-                                        <b-button class="button is-small is-warning mr-1" tag="a" icon-right="pencil" @click="getData(props.row.office_id)"></b-button>
+                                        <b-button class="button is-small is-warning mr-1" tag="a" icon-right="pencil" @click="getData(props.row.repo_file_id)"></b-button>
                                     </b-tooltip>
                                     <b-tooltip label="Delete" type="is-danger">
-                                        <b-button class="button is-small is-danger mr-1" icon-right="delete" @click="confirmDelete(props.row.office_id)"></b-button>
+                                        <b-button class="button is-small is-danger mr-1" icon-right="delete" @click="confirmDelete(props.row.repo_file_id)"></b-button>
                                     </b-tooltip>
                                 </div>
                             </b-table-column>
@@ -156,7 +155,7 @@ export default {
             data: [],
             total: 0,
             loading: false,
-            sortField: 'file_id',
+            sortField: 'repo_file_id',
             sortOrder: 'desc',
             page: 1,
             perPage: 5,
@@ -166,19 +165,16 @@ export default {
             global_id : 0,
 
             search: {
-                filename: '',
+                repo: '',
             },
 
             isModalCreate: false,
 
             fields: {
-                office_id: 0,
-                appointment_type: '',
-
+                repo_filename: 0,
+                repo_path: {},
             },
             errors: {},
-
-            offices: [],
 
             btnClass: {
                 'is-success': true,
@@ -202,7 +198,7 @@ export default {
             ].join('&')
 
             this.loading = true
-            axios.get(`/get-offices?${params}`)
+            axios.get(`/get-files?${params}`)
                 .then(({ data }) => {
                     this.data = [];
                     let currentTotal = data.total
@@ -263,7 +259,7 @@ export default {
         },
         //execute delete after confirming
         deleteSubmit(delete_id) {
-            axios.delete('/offices/' + delete_id).then(res => {
+            axios.delete('/files/' + delete_id).then(res => {
                 this.loadAsyncData();
             }).catch(err => {
                 if (err.response.status === 422) {
@@ -280,64 +276,19 @@ export default {
 
 
             //nested axios for getting the address 1 by 1 or request by request
-            axios.get('/offices/'+data_id).then(res=>{
+            axios.get('/files/'+data_id).then(res=>{
                 this.fields = res.data;
             });
         },
 
         clearFields(){
             this.fields = {
-                appointment_type: '',
+                repo_path: {},
             };
         },
 
 
-        submit: function(){
-            if(this.global_id > 0){
-                //update
-                axios.put('/offices/'+this.global_id, this.fields).then(res=>{
-                    if(res.data.status === 'updated'){
-                        this.$buefy.dialog.alert({
-                            title: 'UPDATED!',
-                            message: 'Successfully updated.',
-                            type: 'is-success',
-                            onConfirm: () => {
-                                this.loadAsyncData();
-                                this.clearFields();
-                                this.global_id = 0;
-                                this.isModalCreate = false;
-                            }
-                        })
-                    }
-                }).catch(err=>{
-                    if(err.response.status === 422){
-                        this.errors = err.response.data.errors;
-                    }
-                })
-            }else{
-                //INSERT HERE
-                axios.post('/offices', this.fields).then(res=>{
-                    if(res.data.status === 'saved'){
-                        this.$buefy.dialog.alert({
-                            title: 'SAVED!',
-                            message: 'Successfully saved.',
-                            type: 'is-success',
-                            confirmText: 'OK',
-                            onConfirm: () => {
-                                this.isModalCreate = false;
-                                this.loadAsyncData();
-                                this.clearFields();
-                                this.global_id = 0;
-                            }
-                        })
-                    }
-                }).catch(err=>{
-                    if(err.response.status === 422){
-                        this.errors = err.response.data.errors;
-                    }
-                });
-            }
-        }
+        
 
     },
 
