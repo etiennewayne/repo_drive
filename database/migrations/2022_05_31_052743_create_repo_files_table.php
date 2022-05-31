@@ -15,6 +15,8 @@ class CreateRepoFilesTable extends Migration
     {
         Schema::create('repo_files', function (Blueprint $table) {
             $table->id('repo_file_id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('user_id')->on('users');
             $table->string('repo_filename')->nullable();
             $table->string('repo_path')->nullable();
             $table->string('repo_ext')->nullable();

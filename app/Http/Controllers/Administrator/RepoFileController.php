@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 
 
 use App\Models\RepoFile;
+use App\Models\Syslog;
 
+use Auth;
 
 class RepoFileController extends Controller
 {
@@ -40,15 +42,28 @@ class RepoFileController extends Controller
             'repo_filename' => ['required']
         ]);
 
+        $mgaFiles = '';
+        $user = Auth::user();
         foreach($req->repo_filepath as $repo){
             //$file = $repo('bed_img');
             $pathFile = $repo->store('public/repo'); //get path of the file
-            RepoFile::create([
+            $data = RepoFile::create([
+                'user_id' => $user->user_id,
                 'repo_filename' => $repo->getClientOriginalName(),
                 'repo_path' => $pathFile,
                 'repo_ext' => $repo->getClientOriginalExtension()
             ]);
+
+            $mgaFiles = $mgaFiles . ', ' . $repo->getClientOriginalName();
         }
+
+        
+            
+        Syslog::create([
+            'syslog' => 'Successfully uploaded file ' . $mgaFiles,
+            'username' => $user->username
+        ]);
+
         return response()->json([
             'status' => 'saved'
         ]);

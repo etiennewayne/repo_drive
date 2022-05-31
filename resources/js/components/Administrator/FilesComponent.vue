@@ -192,7 +192,7 @@ export default {
         loadAsyncData() {
             const params = [
                 `sort_by=${this.sortField}.${this.sortOrder}`,
-                `office=${this.search.office}`,
+                `repo=${this.search.repo}`,
                 `perpage=${this.perPage}`,
                 `page=${this.page}`
             ].join('&')

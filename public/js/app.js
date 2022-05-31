@@ -7805,7 +7805,7 @@ __webpack_require__.r(__webpack_exports__);
     loadAsyncData: function loadAsyncData() {
       var _this = this;
 
-      var params = ["sort_by=".concat(this.sortField, ".").concat(this.sortOrder), "office=".concat(this.search.office), "perpage=".concat(this.perPage), "page=".concat(this.page)].join('&');
+      var params = ["sort_by=".concat(this.sortField, ".").concat(this.sortOrder), "repo=".concat(this.search.repo), "perpage=".concat(this.perPage), "page=".concat(this.page)].join('&');
       this.loading = true;
       axios.get("/get-files?".concat(params)).then(function (_ref) {
         var data = _ref.data;
@@ -34411,24 +34411,6 @@ var render = function () {
                           href: "/users",
                         },
                       }),
-                      _vm._v(" "),
-                      _c("b-menu-item", {
-                        attrs: {
-                          label: "Franchise",
-                          icon: "microsoft-office",
-                          tag: "a",
-                          href: "/franchise",
-                        },
-                      }),
-                      _vm._v(" "),
-                      _c("b-menu-item", {
-                        attrs: {
-                          label: "QR Scanner",
-                          icon: "qrcode-scan",
-                          tag: "a",
-                          href: "/qr-scanner",
-                        },
-                      }),
                     ],
                     1
                   ),
@@ -34438,7 +34420,7 @@ var render = function () {
                     { attrs: { label: "Actions" } },
                     [
                       _c("b-menu-item", {
-                        attrs: { label: "Logout" },
+                        attrs: { icon: "logout", label: "Logout" },
                         on: { click: _vm.logout },
                       }),
                     ],
