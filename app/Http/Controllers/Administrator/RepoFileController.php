@@ -26,8 +26,10 @@ class RepoFileController extends Controller
     }
 
     public function getFiles(Request $req){
+        $user = Auth::user();
         $sort = explode('.',$req->sort_by);
         $data = RepoFile::where('repo_filename', 'like', $req->repo . '%')
+            ->where('user_id', $user->user_id)
             ->orderBy($sort[0], $sort[1])
             ->paginate($req->perpage);
         return $data;
