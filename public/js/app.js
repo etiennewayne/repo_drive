@@ -9415,6 +9415,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -30181,7 +30186,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.login-wrapper[data-v-6bdc8b8e]{\n    height: 100vh;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.login[data-v-6bdc8b8e]{\n    width: 500px;\n}\n.panel-body[data-v-6bdc8b8e]{\n    margin: 15px;\n}\n.img-container[data-v-6bdc8b8e]{\n    display: flex;\n    justify-content: center;\n}\n.img[data-v-6bdc8b8e]{\n    height: 200px;\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.login-wrapper[data-v-6bdc8b8e]{\n    height: 100vh;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.login[data-v-6bdc8b8e]{\n    width: 500px;\n}\n.panel-body[data-v-6bdc8b8e]{\n    margin: 15px;\n}\n.img-container[data-v-6bdc8b8e]{\n    display: flex;\n    justify-content: center;\n}\n.img[data-v-6bdc8b8e]{\n    height: 200px;\n}\n.icon-wrapper[data-v-6bdc8b8e]{\n    display: flex;\n    margin: 20px;\n    justify-content: center;\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -33993,17 +33998,10 @@ var render = function () {
                                     [
                                       _c("b-button", {
                                         staticClass:
-                                          "button is-small is-warning mr-1",
+                                          "button is-small is-info mr-1",
                                         attrs: {
                                           tag: "a",
-                                          "icon-right": "pencil",
-                                        },
-                                        on: {
-                                          click: function ($event) {
-                                            return _vm.getData(
-                                              props.row.repo_file_id
-                                            )
-                                          },
+                                          "icon-right": "download",
                                         },
                                       }),
                                     ],
@@ -36715,15 +36713,15 @@ var render = function () {
         [
           _c("div", { staticClass: "panel is-primary" }, [
             _c("div", { staticClass: "panel-heading" }, [
-              _vm._v(
-                "\n                        SECURITY CHECK\n                    "
-              ),
+              _vm._v("\n                    SECURITY CHECK\n                "),
             ]),
             _vm._v(" "),
             _c(
               "div",
               { staticClass: "panel-body" },
               [
+                _vm._m(0),
+                _vm._v(" "),
                 _c(
                   "b-field",
                   {
@@ -36775,9 +36773,20 @@ var render = function () {
                   1
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "buttons" }, [
+                _c("div", { staticClass: "buttons mb-3" }, [
                   _c("button", { class: _vm.btnClass }, [_vm._v("LOGIN")]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "button is-link",
+                      attrs: { tag: "a", href: "/sign-up" },
+                    },
+                    [_vm._v("REGISTER")]
+                  ),
                 ]),
+                _vm._v(" "),
+                _c("div", { staticStyle: { height: "20px" } }),
               ],
               1
             ),
@@ -36787,7 +36796,24 @@ var render = function () {
     ]),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon-wrapper" }, [
+      _c("img", {
+        staticStyle: { height: "120px" },
+        attrs: { src: "/img/dictlogo.png" },
+      }),
+      _vm._v(" "),
+      _c("img", {
+        staticStyle: { height: "120px" },
+        attrs: { src: "/img/gadtclogo.png" },
+      }),
+    ])
+  },
+]
 render._withStripped = true
 
 

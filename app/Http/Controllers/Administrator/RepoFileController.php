@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Storage;
+
 
 use App\Models\RepoFile;
 use App\Models\Syslog;
@@ -37,7 +39,7 @@ class RepoFileController extends Controller
 
 
     public function store(Request $req){
-
+  
         $req->validate([
             'repo_filename' => ['required']
         ]);
@@ -46,7 +48,10 @@ class RepoFileController extends Controller
         $user = Auth::user();
         foreach($req->repo_filepath as $repo){
             //$file = $repo('bed_img');
+
             $pathFile = $repo->store('public/repo'); //get path of the file
+            $path = explode('/', $pathFile);
+
             $data = RepoFile::create([
                 'user_id' => $user->user_id,
                 'repo_filename' => $repo->getClientOriginalName(),
@@ -69,5 +74,17 @@ class RepoFileController extends Controller
         ]);
     }
 
+
+    public function destroy($id){
+
+        $data = RepoFile::find($id);
+        Storage::delete($data->repo_path);
+
+        RepoFile::destroy($id);
+
+        return response()->json([
+            'status' => 'deleted'
+        ], 200);
+    }
 
 }
