@@ -55,7 +55,7 @@ class RepoFileController extends Controller
             $data = RepoFile::create([
                 'user_id' => $user->user_id,
                 'repo_filename' => $repo->getClientOriginalName(),
-                'repo_path' => $pathFile,
+                'repo_path' => $path[2],
                 'repo_ext' => $repo->getClientOriginalExtension()
             ]);
 
@@ -78,7 +78,10 @@ class RepoFileController extends Controller
     public function destroy($id){
 
         $data = RepoFile::find($id);
-        Storage::delete($data->repo_path);
+
+        if(Storage::exists('public/repo/' .$data->repo_path)) {
+            Storage::delete('public/repo/' . $data->repo_path);
+        }
 
         RepoFile::destroy($id);
 

@@ -34002,6 +34002,9 @@ var render = function () {
                                         attrs: {
                                           tag: "a",
                                           "icon-right": "download",
+                                          href:
+                                            "/storage/repo/" +
+                                            props.row.repo_path,
                                         },
                                       }),
                                     ],
