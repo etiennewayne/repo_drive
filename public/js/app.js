@@ -7769,6 +7769,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "AppointmentType",
   data: function data() {
@@ -7779,7 +7785,7 @@ __webpack_require__.r(__webpack_exports__);
       sortField: 'repo_file_id',
       sortOrder: 'desc',
       page: 1,
-      perPage: 5,
+      perPage: 20,
       defaultSortDirection: 'asc',
       global_id: 0,
       search: {
@@ -33900,7 +33906,11 @@ var render = function () {
                     }),
                     _vm._v(" "),
                     _c("b-table-column", {
-                      attrs: { field: "repo_filename", label: "Filename" },
+                      attrs: {
+                        field: "repo_filename",
+                        label: "Filename",
+                        sortable: "",
+                      },
                       scopedSlots: _vm._u([
                         {
                           key: "default",
@@ -33918,7 +33928,7 @@ var render = function () {
                     }),
                     _vm._v(" "),
                     _c("b-table-column", {
-                      attrs: { field: "repo_filetype", label: "Type" },
+                      attrs: { field: "repo_ext", label: "Type", sortable: "" },
                       scopedSlots: _vm._u([
                         {
                           key: "default",
@@ -33927,6 +33937,32 @@ var render = function () {
                               _vm._v(
                                 "\n                            " +
                                   _vm._s(props.row.repo_ext) +
+                                  "\n                        "
+                              ),
+                            ]
+                          },
+                        },
+                      ]),
+                    }),
+                    _vm._v(" "),
+                    _c("b-table-column", {
+                      attrs: {
+                        field: "created_at",
+                        label: "Uploaded At",
+                        sortable: "",
+                      },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "default",
+                          fn: function (props) {
+                            return [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    new Date(
+                                      props.row.created_at
+                                    ).toLocaleString()
+                                  ) +
                                   "\n                        "
                               ),
                             ]

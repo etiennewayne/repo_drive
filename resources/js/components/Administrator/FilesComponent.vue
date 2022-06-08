@@ -40,6 +40,8 @@
                             </div>
                         </div>
 
+                        
+
                         <b-table
                             :data="data"
                             :loading="loading"
@@ -60,12 +62,16 @@
                                 {{ props.row.repo_file_id }}
                             </b-table-column>
 
-                            <b-table-column field="repo_filename" label="Filename" v-slot="props">
+                            <b-table-column field="repo_filename" label="Filename" sortable v-slot="props">
                                 {{ props.row.repo_filename }}
                             </b-table-column>
 
-                            <b-table-column field="repo_filetype" label="Type" v-slot="props">
+                            <b-table-column field="repo_ext" label="Type" sortable v-slot="props">
                                 {{ props.row.repo_ext }}
+                            </b-table-column>
+
+                            <b-table-column field="created_at" label="Uploaded At" sortable v-slot="props">
+                                {{ new Date(props.row.created_at).toLocaleString() }}
                             </b-table-column>
 
                             <b-table-column label="Action" v-slot="props">
@@ -158,7 +164,7 @@ export default {
             sortField: 'repo_file_id',
             sortOrder: 'desc',
             page: 1,
-            perPage: 5,
+            perPage: 20,
             defaultSortDirection: 'asc',
 
 
